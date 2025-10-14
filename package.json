@@ -1,0 +1,31 @@
+{
+  "name": "duyl328",
+  "version": "1.00.00.0001",
+  "description": "一个学生",
+  "author": "Jimmy Gatsby",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "feed": "^4.2.2",
+    "markdown-it-mathjax3": "^4.3.2",
+    "sass": "^1.77.2",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-vue-components": "^0.27.0",
+    "vitepress": "^1.2.2"
+  },
+  "dependencies": {
+    "@giscus/vue": "^3.0.0",
+    "markdown-it-footnote": "^4.0.0",
+    "tdesign-icons-vue-next": "^0.2.2",
+    "tdesign-vue-next": "^1.9.5",
+    "vue": "^3.4.27"
+  }
+}

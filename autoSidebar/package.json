@@ -1,0 +1,19 @@
+{
+  "name": "auto-sidebar",
+  "version": "1.00.00.0001",
+  "author": "duyl328",
+  "description": "",
+  "keywords": [
+    "vite",
+    "vitepress"
+  ],
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "vite build"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
+}
