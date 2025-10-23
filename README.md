@@ -1,7 +1,7 @@
 
 # Bolg
 
-> https://duyl328.org/
+> https://seyl.me
 
 
 ## 协议
