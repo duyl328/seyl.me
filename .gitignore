@@ -136,4 +136,4 @@ cache
 # Claude Code
 .claude/
 TODO.md
-AGENTS.md
+docs/.vitepress/autoSidebar.ts

@@ -39,33 +39,31 @@ function getFilesRecursively (dirPath: string) {
     contents: [],
     parentFolder: '',
   }
-  
-  // 获取当前目录下的所有文件和文件夹
-  const items = fs.readdirSync(dirPath)
-  items.forEach(item => {
-    const fullPath = path.join(dirPath, item)
-    const stats = fs.statSync(fullPath)
-    
-    if (stats.isDirectory()) {
-      // 如果是文件夹，递归调用并保留目录结构
-      if (result.contents === null || result.contents === undefined) {
-        result.contents = []
-      }
-      result.contents.push(getFilesRecursively(fullPath)) // 递归进入子文件夹
-    } else if (stats.isFile()) {
-      if (result.contents === null || result.contents === undefined) {
-        result.contents = []
-      }
-      // 如果是文件，直接加入当前目录的内容
-      result.contents.push({
+
+  // 获取并排序（目录优先，其次文件；中文自然序）
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true }) as unknown as Array<{ name: string; isDirectory: () => boolean; isFile: () => boolean }>
+  const collator = new Intl.Collator('zh-Hans')
+  entries.sort((a, b) => {
+    const aIsDir = a.isDirectory()
+    const bIsDir = b.isDirectory()
+    if (aIsDir !== bIsDir) return aIsDir ? -1 : 1
+    return collator.compare(a.name, b.name)
+  })
+
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name)
+    if (entry.isDirectory()) {
+      result.contents!.push(getFilesRecursively(fullPath))
+    } else if (entry.isFile()) {
+      result.contents!.push({
         type: 'file',
         path: fullPath,
         contents: undefined,
         parentFolder: result.path,
       })
     }
-  })
-  
+  }
+
   return result
 }
 
@@ -102,10 +100,9 @@ function divideSidebar (
     // 如果有子项目，则该级别无链接
     if (file.type === 'file') {
       let fileName = FileUtils.removeExtension(FileUtils.getFileName(file.path))
-      // 是否为 index 文件【index 跳过】
-      if (fileName.includes('index')) continue
+      // 是否为 index 文件【index 跳过】（等值匹配，避免误伤）
+      if (fileName.toLowerCase() === 'index') continue
       
-      let lastFolderName = FileUtils.getLastFolderName(file.parentFolder)
       let relativePath = FileUtils.removeExtension(FileUtils.getRelativePath(file.path, rootDir))
       // 确保链接以 / 开头（VitePress 要求绝对路径）
       if (!relativePath.startsWith('/')) {
@@ -123,7 +120,7 @@ function divideSidebar (
         // 空文件夹进行单独处理
         let obj: SidebarItem = {
           text: folderName + '[待更新]',
-          collapsed: false,
+          collapsed: true,
           items: [],
         }
         res.push(obj)
@@ -131,7 +128,7 @@ function divideSidebar (
         let items = divideSidebar(file.contents, rootDir)
         res.push({
           text: folderName,
-          collapsed: false,
+          collapsed: true,
           items: items,
         })
       }

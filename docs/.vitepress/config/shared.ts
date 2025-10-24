@@ -12,7 +12,8 @@ import sidebar from '../../../autoSidebar'
 export default defineConfig({
     lastUpdated: true,
     cleanUrls: true,
-    ignoreDeadLinks: true,
+    // 开发默认忽略死链；严格检查时可通过环境变量开启
+    ignoreDeadLinks: process.env.STRICT_LINKS ? false : true,
     sitemap: {
         hostname: 'https://duyl328.github.io',
     },
@@ -41,12 +42,7 @@ export default defineConfig({
         externalLinkIcon: true,
     },
 
-    markdown: {
-        math: true,
-    },
-
     vite: {
-        assetsInclude: ['**/*.JPG', '**/*.JPEG'],
         plugins: [
             // 自动更新列表
             sidebar('docs/.vitepress', 'docs/notes'),
@@ -54,12 +50,14 @@ export default defineConfig({
                 resolvers: [
                     TDesignResolver({
                         library: 'vue-next',
+                        importStyle: 'css',
                     })],
             }),
             Components({
                 resolvers: [
                     TDesignResolver({
                         library: 'vue-next',
+                        importStyle: 'css',
                     })],
             }),
         ],

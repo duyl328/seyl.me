@@ -16,6 +16,7 @@ export default defineConfig({
     },
   },
   markdown: {
+    math: true,
     config: (md) => {
       // 添加脚注
       md.use(markdownItFootnote)

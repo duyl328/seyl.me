@@ -40,31 +40,52 @@ export default function autoGenerateSidebar (
   // /home/runner/work/duyl328.github.io/duyl328.github.io/docs/notes
   // /home/runner/work/duyl328.github.io/duyl328.github.io/docs/.vitepress
   
+  let lastContent = ''
+  const tsFilePath = path.resolve(sidebarP, 'autoSidebar.ts')
+
+  function generateSidebarFile() {
+    const sideBar = createSideBar(docP)
+    const decodedData = JSON.stringify(sideBar, (key, value) => {
+      if (typeof value === 'string') return decodeURIComponent(value)
+      return value
+    }, 2)
+    const tsContent = `export default ${decodedData}`
+    if (tsContent === lastContent && fs.existsSync(tsFilePath)) return false
+    fs.mkdirSync(sidebarP, { recursive: true })
+    fs.writeFileSync(tsFilePath, tsContent, 'utf-8')
+    lastContent = tsContent
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[autoSidebar] updated:', tsFilePath)
+    }
+    return true
+  }
+
+  let timer: NodeJS.Timeout | undefined
+  function scheduleGenerate() {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      generateSidebarFile()
+    }, 120)
+  }
+
   return {
     name: 'autoSidebar',
-    config (config) {
-      let sideBar = createSideBar(docP)
-      // 生成的 TypeScript 文件内容
-      const decodedData = JSON.stringify(sideBar, (key, value) => {
-        if (typeof value === 'string') {
-          // 解码字符串中的 URL 编码
-          return decodeURIComponent(value);
-        }
-        return value;
-      }, 2);
-      
-      const tsContent = `export default ${decodedData}`
-      // 定义生成文件的路径
-      const tsFilePath = path.resolve(sidebarP, 'autoSidebar.ts')
-      // 确保目录存在，如果不存在则创建它
-      fs.mkdirSync(sidebarP, { recursive: true })
-      // 写入文件
-      fs.writeFileSync(tsFilePath, tsContent, 'utf-8')
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Generated TypeScript file at', tsFilePath)
-      }
-      
+    config(config) {
+      generateSidebarFile()
       return config
+    },
+    configureServer(server: ViteDevServer) {
+      // 监听 notes 下的 Markdown 变更，自动重建侧边栏
+      server.watcher.on('all', (_event, file) => {
+        if (!file) return
+        const normalized = file.replace(/\\/g, '/')
+        if (
+          normalized.endsWith('.md') &&
+          normalized.includes(docP.replace(/\\/g, '/'))
+        ) {
+          scheduleGenerate()
+        }
+      })
     },
   }
 }
