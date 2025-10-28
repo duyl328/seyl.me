@@ -4,7 +4,7 @@
 
     <Giscus
         v-if="showComment"
-        repo="duyl328/duyl328.github.io"
+        repo="duyl328/seyl.me"
         repo-id="R_kgDONmELAA"
         category="Announcements"
         category-id="DIC_kwDONmELAM4ClzgV"

@@ -15,9 +15,8 @@ export default defineConfig({
     // 开发默认忽略死链；严格检查时可通过环境变量开启
     ignoreDeadLinks: process.env.STRICT_LINKS ? false : true,
     sitemap: {
-        hostname: 'https://duyl328.github.io',
+        hostname: 'https://seyl.me',
     },
-    // base: 'https://duyl328.github.io',
     base: process.env.BASE || '/',
     head: [
         ['meta', { name: 'msvalidate.01', content: '74145A0C19682BC79C3B9FC837149152' }]

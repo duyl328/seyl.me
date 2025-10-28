@@ -9,7 +9,7 @@ export function handleHeadMeta (context: TransformContext) {
 }
 
 export function addBase (relativePath: string) {
-  const host = 'https://duyl328.github.io'
+  const host = 'https://seyl.me'
   if (relativePath.startsWith('/')) {
     return host + relativePath
   } else {
