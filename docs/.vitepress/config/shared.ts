@@ -50,14 +50,12 @@ export default defineConfig({
                 resolvers: [
                     TDesignResolver({
                         library: 'vue-next',
-                        importStyle: 'css',
                     })],
             }),
             Components({
                 resolvers: [
                     TDesignResolver({
                         library: 'vue-next',
-                        importStyle: 'css',
                     })],
             }),
         ],
