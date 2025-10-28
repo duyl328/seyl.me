@@ -20,6 +20,7 @@ export default defineConfig({
     // base: 'https://duyl328.github.io',
     base: process.env.BASE || '/',
     head: [
+        ['meta', { name: 'msvalidate.01', content: '74145A0C19682BC79C3B9FC837149152' }]
     ],
     // https://vitepress.dev/reference/site-config#transformhead
     async transformHead(context) {
