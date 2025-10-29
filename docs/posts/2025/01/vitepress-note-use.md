@@ -14,6 +14,30 @@ head:
   - - meta
     - name: description
       content: 本文介绍了如何使用 vitepress
+  - - meta
+    - name: keywords
+      content: VitePress, Markdown, 静态网站生成器, Vue, 文档工具, 博客搭建, VitePress教程, 内部链接, 链接跳转
+  - - meta
+    - property: og:title
+      content: VitePress 笔记使用 | duyl328
+  - - meta
+    - property: og:description
+      content: 介绍如何使用VitePress构建文档和博客网站
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2025-01-20
+  - - meta
+    - name: twitter:card
+      content: summary
+  - - meta
+    - name: twitter:title
+      content: VitePress 笔记使用
+  - - meta
+    - name: twitter:description
+      content: 介绍如何使用VitePress构建文档和博客网站
 ---
 
 > :black_nib: 文章摘要

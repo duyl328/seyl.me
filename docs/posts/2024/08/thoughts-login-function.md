@@ -9,8 +9,32 @@ tags:
   - 原创
 head:
   - - meta
+    - name: description
+      content: 这篇文章介绍了如何安全地存储用户数据，包括用户名、密码哈希、邮箱等，强调使用bcrypt加密密码和唯一盐来提升安全性。详细解释了HTTPS如何通过加密、身份验证和数据完整性保护来确保通信安全，并探讨了前端加密与HTTPS的配合使用。文章还讨论了如何管理SSL/TLS证书、Token存储和安全性防护策略，如防止XSS和CSRF攻击
+  - - meta
     - name: keywords
-      content: 登录 架构
+      content: 登录功能, 用户认证, 密码加密, bcrypt, HTTPS, SSL/TLS, Token存储, XSS防护, CSRF防护, Web安全, 身份验证, 安全架构
+  - - meta
+    - property: og:title
+      content: 登录功能的思考 | duyl328
+  - - meta
+    - property: og:description
+      content: 介绍如何安全地存储用户数据和实现登录功能，包括密码加密、HTTPS、Token存储和安全防护策略
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2023-08-05
+  - - meta
+    - name: twitter:card
+      content: summary
+  - - meta
+    - name: twitter:title
+      content: 登录功能的思考
+  - - meta
+    - name: twitter:description
+      content: 介绍如何安全地存储用户数据和实现登录功能
 editLink: false
 lastUpdated: 2025-01-20T10:10:00
 ---

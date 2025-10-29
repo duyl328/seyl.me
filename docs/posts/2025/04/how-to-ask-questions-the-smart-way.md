@@ -5,6 +5,40 @@ date: 2025-04-10
 tags:
   - 转载
   - 思考
+head:
+  - - meta
+    - name: description
+      content: 本文教导如何有效、聪明地提出技术问题，提高获得有用答案的概率。强调在提问前应尽可能自行搜索、阅读文档和尝试解决问题，并在提问时表达清晰、尊重他人、避免含糊和懒惰。文章指出应在合适的论坛提问、使用明确的标题、准确描述问题经过和现象，并在问题解决后分享经验。适用于技术社区和所有希望提高提问效率的人
+  - - meta
+    - name: keywords
+      content: 提问的智慧, 技术提问, 如何提问, 开发者社区, 黑客文化, 问题解决, Stack Overflow, 技术论坛, 提问技巧, Eric Raymond, 社区规范
+  - - meta
+    - property: og:title
+      content: 提问的智慧 | duyl328
+  - - meta
+    - property: og:description
+      content: 教导如何有效、聪明地提出技术问题，提高获得有用答案的概率
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2025-04-10
+  - - meta
+    - property: article:author
+      content: Eric Raymond, Rick Moen, 翻译：Ryan Wu
+  - - meta
+    - property: article:tag
+      content: 技术文化
+  - - meta
+    - name: twitter:card
+      content: summary_large_image
+  - - meta
+    - name: twitter:title
+      content: 提问的智慧
+  - - meta
+    - name: twitter:description
+      content: 教导如何有效、聪明地提出技术问题，提高获得有用答案的概率
 editLink: false
 lastUpdated: 2025-04-10T16:48:34
 ---

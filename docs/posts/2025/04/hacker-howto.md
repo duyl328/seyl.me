@@ -5,6 +5,40 @@ date: 2025-04-11
 tags:
   - 转载
   - 思考
+head:
+  - - meta
+    - name: description
+      content: 本文系统地梳理了黑客文化的核心精神、态度与必备技能。深入探讨"黑客"与"破坏者（Cracker）"的根本区别，强调黑客并非违法分子，而是追求自由、分享与优雅解决问题的群体。文章总结了成为真正黑客的明确路径：学习编程语言（Python、C、LISP等）、掌握操作系统（Linux和Unix）、了解互联网底层原理、熟练使用英语、参与自由软件项目，以及具备"懒惰、急躁、傲慢"三种黑客美德
+  - - meta
+    - name: keywords
+      content: 黑客文化, 如何成为黑客, 黑客精神, 编程学习, Linux, Unix, Python, C语言, LISP, 开源社区, 自由软件, 黑客态度, 技术哲学, Eric Raymond
+  - - meta
+    - property: og:title
+      content: 如何成为黑客 | duyl328
+  - - meta
+    - property: og:description
+      content: 系统梳理黑客文化的核心精神、态度与必备技能，探讨成为真正黑客的明确路径
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2025-04-11
+  - - meta
+    - property: article:author
+      content: Eric Raymond, 翻译：duyl328
+  - - meta
+    - property: article:tag
+      content: 技术文化
+  - - meta
+    - name: twitter:card
+      content: summary_large_image
+  - - meta
+    - name: twitter:title
+      content: 如何成为黑客
+  - - meta
+    - name: twitter:description
+      content: 系统梳理黑客文化的核心精神、态度与必备技能，探讨成为真正黑客的明确路径
 editLink: false
 lastUpdated: 2025-04-11T16:48:34
 ---

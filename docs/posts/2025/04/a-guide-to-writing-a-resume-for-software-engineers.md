@@ -7,8 +7,35 @@ tags:
   - 转载
 head:
   - - meta
+    - name: description
+      content: 这篇指南为软件工程师求职提供了简明实用的简历与面试建议。简历方面，推荐使用标准格式、常用字体、窄边距排版，确保ATS可识别。内容应聚焦于量化成果、核心技能和关键词，简历长度控制在一页。结构建议包括专业摘要、工作经历、教育背景、项目经验和奖项。行为面试部分介绍了STAR答题法与高频题目，鼓励结合实际经历展现沟通、合作与解决问题能力
+  - - meta
     - name: keywords
-      content: 面试
+      content: 软件工程师简历, 简历撰写, 面试技巧, STAR答题法, ATS优化, 技术简历, 求职指南, 编程面试, 简历模板, 职业发展, Resume Writing
+  - - meta
+    - property: og:title
+      content: 软件工程师简历撰写的实用指南 | duyl328
+  - - meta
+    - property: og:description
+      content: 为软件工程师求职提供简明实用的简历与面试建议，包括简历格式、内容结构和STAR答题法
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2025-04-09
+  - - meta
+    - property: article:tag
+      content: 职业发展
+  - - meta
+    - name: twitter:card
+      content: summary_large_image
+  - - meta
+    - name: twitter:title
+      content: 软件工程师简历撰写的实用指南
+  - - meta
+    - name: twitter:description
+      content: 为软件工程师求职提供简明实用的简历与面试建议
 editLink: false
 lastUpdated: 2025-04-09T21:35:34
 ---

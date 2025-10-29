@@ -8,8 +8,32 @@ tags:
   - 原创
 head:
   - - meta
+    - name: description
+      content: 本文调研了主流网站主页的布局设计和内容展示方式。通过分析多个国内外信息展示网站，总结了通过大块区域内容展示来呈现更多信息的设计模式。文章详细介绍了标签（板块）分类、信息流展示、卡片式布局等常见设计模式，并探讨了不同渲染方式的优缺点，为网站设计提供实用参考
+  - - meta
     - name: keywords
-      content: 设计 html 布局
+      content: 网站布局, 主页设计, UI设计, 信息展示, 页面布局, 渲染方式, 卡片式布局, 信息流, 网页设计, 用户体验, 前端设计
+  - - meta
+    - property: og:title
+      content: 主流网站主页布局展示内容及渲染方式调研 | duyl328
+  - - meta
+    - property: og:description
+      content: 调研主流网站主页的布局设计和内容展示方式，总结常见设计模式
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2023-08-03
+  - - meta
+    - name: twitter:card
+      content: summary
+  - - meta
+    - name: twitter:title
+      content: 主流网站主页布局展示内容及渲染方式调研
+  - - meta
+    - name: twitter:description
+      content: 调研主流网站主页的布局设计和内容展示方式
 editLink: false
 lastUpdated: 2025-01-20T10:09:34
 ---

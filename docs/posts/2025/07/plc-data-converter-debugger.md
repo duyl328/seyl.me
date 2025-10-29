@@ -5,6 +5,40 @@ date: 2025-07-22
 tags:
   - 工具
   - PLC
+head:
+  - - meta
+    - name: description
+      content: 这篇文章记录了一个PLC数据格式转换调试工具的完整开发历程。作为工控工程师，深受各种PLC品牌数据格式差异之苦——西门子的CDAB字节序、欧姆龙的BADC排列、各种BCD/DEC编码格式。通过"暴力美学"思维，开发了一个纯前端工具，穷举所有可能的组合，让用户一次性看到所有转换结果。工具采用HTML+JavaScript实现，无需后端依赖，专为自动化工程师、嵌入式开发者和系统集成商设计
+  - - meta
+    - name: keywords
+      content: PLC数据转换, 字节序转换, BCD编码, DEC编码, 西门子PLC, 欧姆龙PLC, CDAB字节序, BADC字节序, 工控工具, 数据调试工具, PLC调试, 自动化工具, JavaScript工具
+  - - meta
+    - property: og:title
+      content: 从痛点到解决方案：PLC数据格式转换调试工具的诞生 | duyl328
+  - - meta
+    - property: og:description
+      content: 记录PLC数据格式转换调试工具的开发历程，解决西门子、欧姆龙等PLC品牌的数据格式差异问题
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2025-07-22
+  - - meta
+    - property: article:author
+      content: duyl328
+  - - meta
+    - property: article:tag
+      content: 工控自动化
+  - - meta
+    - name: twitter:card
+      content: summary_large_image
+  - - meta
+    - name: twitter:title
+      content: 从痛点到解决方案：PLC数据格式转换调试工具的诞生
+  - - meta
+    - name: twitter:description
+      content: 记录PLC数据格式转换调试工具的开发历程，解决西门子、欧姆龙等PLC品牌的数据格式差异问题
 editLink: false
 lastUpdated: 2025-07-22T13:48:34
 ---

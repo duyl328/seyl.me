@@ -10,8 +10,32 @@ tags:
   - 原创
 head:
   - - meta
+    - name: description
+      content: 这篇文章讨论了如何同步地获取JavaScript Promise对象的状态。通过Stack Overflow上的解决方案，介绍了如何使用Promise.race()方法判断Promise的状态。文章详细解释了通过Promise.race()对Promise和一个额外的target对象进行竞赛（race），根据返回的对象判断Promise是否处于pending（待定）、fulfilled（已完成）或rejected（已拒绝）状态
+  - - meta
     - name: keywords
-      content: js javascript
+      content: JavaScript, Promise, Promise状态, Promise.race, 异步编程, Promise pending, Promise fulfilled, Promise rejected, JS异步, 前端开发
+  - - meta
+    - property: og:title
+      content: 在JavaScript获取Promise的状态 | duyl328
+  - - meta
+    - property: og:description
+      content: 介绍如何使用Promise.race()方法同步地获取Promise对象的状态
+  - - meta
+    - property: og:type
+      content: article
+  - - meta
+    - property: article:published_time
+      content: 2022-08-09
+  - - meta
+    - name: twitter:card
+      content: summary
+  - - meta
+    - name: twitter:title
+      content: 在JavaScript获取Promise的状态
+  - - meta
+    - name: twitter:description
+      content: 介绍如何使用Promise.race()方法同步地获取Promise对象的状态
 editLink: false
 lastUpdated: 2025-01-20T10:08:00
 ---

@@ -3,6 +3,37 @@ layout: doc
 editLink: false
 lastUpdated: false
 isNoBackBtn: true
+head:
+  - - meta
+    - name: description
+      content: duyl328是一名全栈开发者，涉猎广泛的T型程序员，现居苏州。主要从事Windows桌面开发与Web前端开发。技术栈包括C#、Vue、Kotlin、Python、Rust、Go等。热爱摄影与旅行，致力于技术创新与知识分享
+  - - meta
+    - name: keywords
+      content: duyl328, 关于我, 全栈开发者, 个人简介, Windows桌面开发, Web前端, C#, Vue, Kotlin, Python, Rust, WPF, Tauri, VitePress, 摄影爱好者, 技术博主, 开源项目
+  - - meta
+    - property: og:title
+      content: 关于我 - duyl328
+  - - meta
+    - property: og:description
+      content: 全栈开发者，涉猎广泛的T型程序员。主要技术栈：C#、Vue、Kotlin、Python、Rust
+  - - meta
+    - property: og:type
+      content: profile
+  - - meta
+    - property: og:url
+      content: https://seyl.me/about
+  - - meta
+    - property: profile:username
+      content: duyl328
+  - - meta
+    - name: twitter:card
+      content: summary
+  - - meta
+    - name: twitter:title
+      content: 关于我 - duyl328
+  - - meta
+    - name: twitter:description
+      content: 全栈开发者，涉猎广泛的T型程序员
 ---
 
 # 关于我
