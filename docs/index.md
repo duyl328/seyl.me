@@ -13,14 +13,53 @@ head:
     - name: msvalidate.01
       content: 74145A0C19682BC79C3B9FC837149152
   - - meta
+    - name: description
+      content: duyl328的技术博客，分享全栈开发经验。主要涉及Vue、Kotlin、C#、Python、Rust等技术栈，涵盖前端开发、后端开发、Windows桌面开发、工控自动化等领域的技术文章、项目实践和开发思考
+  - - meta
     - name: keywords
-      content: vitepress, 文档, 网站
+      content: duyl328, 技术博客, 全栈开发, Vue, Kotlin, C#, Python, Rust, 前端开发, 后端开发, Windows桌面开发, WPF, Tauri, VitePress, 工控自动化, PLC, React, TypeScript, JavaScript, 编程思考, 开源项目
+  - - meta
+    - name: author
+      content: duyl328
+  - - meta
+    - property: og:type
+      content: website
+  - - meta
+    - property: og:site_name
+      content: duyl328的技术博客
   - - meta
     - property: og:title
-      content: 我的主页
+      content: duyl328 - 全栈开发者的技术博客
   - - meta
     - property: og:description
-      content: 这是一个 VitePress 站点
+      content: 分享Vue、Kotlin、C#、Python、Rust等全栈开发经验，涵盖前端、后端、Windows桌面开发、工控自动化等领域的技术文章和项目实践
+  - - meta
+    - property: og:url
+      content: https://seyl.me
+  - - meta
+    - property: og:image
+      content: https://seyl.me/web-app-manifest-512x512.png
+  - - meta
+    - property: og:image:width
+      content: "512"
+  - - meta
+    - property: og:image:height
+      content: "512"
+  - - meta
+    - property: og:image:alt
+      content: duyl328的技术博客
+  - - meta
+    - name: twitter:card
+      content: summary_large_image
+  - - meta
+    - name: twitter:title
+      content: duyl328 - 全栈开发者的技术博客
+  - - meta
+    - name: twitter:description
+      content: 分享Vue、Kotlin、C#、Python、Rust等全栈开发经验
+  - - meta
+    - name: twitter:image
+      content: https://seyl.me/web-app-manifest-512x512.png
 ---
 
 <!-- 之所以将代码写在 md 里面，而非单独封装为 Vue 组件，因为 aside 不会动态刷新，参考 https://github.com/vuejs/vitepress/issues/2686 -->
