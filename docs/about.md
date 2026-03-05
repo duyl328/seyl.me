@@ -71,4 +71,3 @@ Rust、Go 等语言。
 - 邮箱：`jimmy.gatsby328@gmail.com`
 - GitHub：[duyl328](https://github.com/duyl328)
 - 博客主页：[seyl.me(say all me)](https://seyl.me)
-- 微信：`duyl328`
