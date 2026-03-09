@@ -1,3 +1,34 @@
+---
+layout: doc
+title: Time Out to Reachable —— 安全网关搭建指北
+date: 2026-03-06
+tags:
+  - 思考
+  - 原创
+  - 网络
+head:
+  - - meta
+    - name: description
+      content: 想搭建一套既稳、又隐蔽、还能兼顾性能的安全网关，到底该选 REALITY、传统 VLESS+TLS，还是 gRPC+Cloudflare？这篇文章不讲手把手配置，而是从原理、流量路径、伪装方式、抗探测能力、证书与域名成本、源站暴露风险等角度，系统拆解三种主流方案的设计逻辑与适用场景。看完你会明白：为什么 REALITY 适合轻量直连，传统方案更适合多业务整合，而 Cloudflare 方案又为何能在隐藏源站和抗攻击上更进一步。
+  - - meta
+    - name: keywords
+      content: Xray TLS gRPC REALITY Cloudflare
+editLink: false
+lastUpdated: 2026-03-08T9:16:12
+---
+# {{ $frontmatter.title }}
+
+
+>  :black_nib: 文章摘要
+
+<!-- DESC SEP -->
+
+想搭建一套既稳、又隐蔽、还能兼顾性能的安全网关，到底该选 REALITY、传统 VLESS+TLS，还是 gRPC+Cloudflare？这篇文章不讲手把手配置，而是从原理、流量路径、伪装方式、抗探测能力、证书与域名成本、源站暴露风险等角度，系统拆解三种主流方案的设计逻辑与适用场景。看完你会明白：为什么 REALITY 适合轻量直连，传统方案更适合多业务整合，而 Cloudflare 方案又为何能在隐藏源站和抗攻击上更进一步。
+
+<!-- DESC SEP -->
+
+
+
 # Time Out to Reachable —— 安全网关搭建指北
 
 
