@@ -9,6 +9,8 @@ import Comment from './components/Comment.vue'
 import ImageViewer from './components/ImageViewer.vue'
 import GoBack from './components/GoBack.vue'
 import PhotoWall from './components/PhotoWall.vue'
+import RelatedPosts from './components/RelatedPosts.vue'
+import PostMeta from './components/PostMeta.vue'
 
 export default {
 	...Theme,
@@ -17,7 +19,11 @@ export default {
 			// https://vitepress.dev/guide/extending-default-theme#layout-slots
 			'doc-after': () => h(Comment),
 			'doc-bottom': () => h(ImageViewer),
-			'aside-top': () => h(GoBack),
+			'aside-top': () => [
+				h(PostMeta),
+				h(GoBack)
+			],
+			'aside-outline-after': () => h(RelatedPosts),
 		})
 	},
 	enhanceApp (ctx) {

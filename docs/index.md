@@ -74,6 +74,13 @@ head:
     >
     <div class="post-date hollow-text">{{ post.date.string }}</div>
   </h2>
+  <div class="post-meta-info">
+    <span class="post-date-text">{{ post.date.string }}</span>
+    <span class="post-reading-time">
+      <t-icon name="time" />
+      预计阅读 {{ post.readingTime }} 分钟
+    </span>
+  </div>
   <t-tag
     v-for="tag in post.tags"
     class="mr-2"
@@ -107,6 +114,7 @@ import {
 	Pagination as TPagination,
   Tag as TTag,
 } from "tdesign-vue-next";
+import { Icon as TIcon } from "tdesign-icons-vue-next";
 
 import { data as posts } from "./.vitepress/theme/posts.data.mts";
 import { isMobile } from "./.vitepress/theme/utils/mobile.ts";
@@ -155,6 +163,12 @@ const onCurrentChange: PaginationProps["onCurrentChange"] = (
 	margin-right: 2px;
 }
 
+.mr-2 :deep(.t-tag) {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-weight: 400;
+	letter-spacing: 0.3px;
+}
+
 .post-title {
 	margin-bottom: 6px;
 	border-top: 0px;
@@ -174,11 +188,35 @@ const onCurrentChange: PaginationProps["onCurrentChange"] = (
 	}
 }
 
+.post-meta-info {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 8px;
+	font-size: 14px;
+	color: var(--vp-c-text-2);
+
+	.post-date-text {
+		display: flex;
+		align-items: center;
+	}
+
+	.post-reading-time {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+
+		:deep(.t-icon) {
+			font-size: 16px;
+		}
+	}
+}
+
 .hollow-text {
-  
+
   /* 设置文本颜色为透明 */
   color: var(--vp-c-bg);
-  
+
 	-webkit-text-stroke: 1px var(--vp-c-text-1);
 }
 </style>
