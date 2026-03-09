@@ -1,6 +1,7 @@
 /**
  * Utility helpers for file path operations
  */
+import path from 'path'
 
 export class FileUtils {
   /**
@@ -33,11 +34,17 @@ export class FileUtils {
    * 截断指定路径
    */
   static getRelativePath (fullPath: string, rootPath: string): string {
-    // 使用 replace 去掉根路径部分，返回相对路径
-    const normalizedRootPath = rootPath.replace(/\\/g, '/')
-    const normalizedFullPath = fullPath.replace(/\\/g, '/')
+    const relativePath = path.relative(rootPath, fullPath)
 
-    return normalizedFullPath.replace(normalizedRootPath + '/', '')
+    // 统一为 POSIX 风格分隔符，避免 Windows 下出现 "\\"
+    const normalizedPath = relativePath.replace(/\\/g, '/')
+
+    // 处理同路径场景，保证上层拼接链接稳定
+    if (normalizedPath === '' || normalizedPath === '.') {
+      return ''
+    }
+
+    return normalizedPath
   }
 
   /**
@@ -66,4 +73,3 @@ export class FileUtils {
     return filename.slice(0, filename.lastIndexOf('.')) || filename
   }
 }
-
