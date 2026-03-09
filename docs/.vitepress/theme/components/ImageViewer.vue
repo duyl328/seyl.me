@@ -14,24 +14,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useRoute } from 'vitepress'
 import zhConfig from 'tdesign-vue-next/es/locale/zh_CN'
 
 import TDesignDark from './TDesignDark.vue'
 
-// 处理 TDesign 的国际化
+// 处理 TDesign 的国际化 - 直接使用常量，无需 watch
 const route = useRoute()
-const globalConfig = ref<typeof zhConfig >(zhConfig)
-watch(
-    () => route.path,
-    () => {
-      globalConfig.value = zhConfig
-    },
-    {
-      immediate: true,
-    },
-)
+const globalConfig = zhConfig
 
 // 处理图片预览
 const show = ref(false)

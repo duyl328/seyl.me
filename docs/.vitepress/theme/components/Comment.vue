@@ -3,7 +3,7 @@
     <!-- params generate in https://giscus.app/zh-CN -->
 
     <Giscus
-        v-if="showComment"
+        :key="route.path"
         repo="duyl328/seyl.me"
         repo-id="R_kgDONmELAA"
         category="Announcements"
@@ -23,7 +23,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, watch, nextTick, computed } from 'vue'
+import { computed } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import Giscus from '@giscus/vue'
 
@@ -34,21 +34,6 @@ const { isDark, frontmatter } = useData()
 const term = computed(() => route.path)
 const theme = computed(() => (isDark.value ? 'noborder_dark' : 'noborder_light'))
 const lang = computed(() => 'zh-Hans')
-
-// language 变化不会触发重新加载，这里 v-if 强制刷新
-const showComment = ref(true)
-watch(
-    () => route.path,
-    () => {
-      showComment.value = false
-      nextTick(() => {
-        showComment.value = true
-      })
-    },
-    {
-      immediate: true,
-    },
-)
 </script>
 <style lang="scss" scoped>
 .comments {
