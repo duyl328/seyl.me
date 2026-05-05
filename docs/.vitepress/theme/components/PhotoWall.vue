@@ -30,6 +30,9 @@
           @click="openPreview(photo)"
           @mouseenter="photo.videoSrc && startHoverVideo($event, photo)"
           @mouseleave="photo.videoSrc && stopHoverVideo($event)"
+          @touchstart.passive="photo.videoSrc && startLongPress($event, photo)"
+          @touchend.passive="photo.videoSrc && stopLongPress($event, photo)"
+          @touchmove.passive="cancelLongPress()"
         >
           <div class="image-shell" :class="{ loaded: loadedMap[photo.src] }">
             <img
@@ -263,6 +266,43 @@ function stopHoverVideo (event: MouseEvent) {
     shell.removeChild(video)
   }
   hoverVideo = null
+}
+
+// 长按播放 Live（移动端）
+let longPressTimer: ReturnType<typeof setTimeout> | null = null
+
+function startLongPress (event: TouchEvent, photo: GalleryPhoto) {
+  cancelLongPress()
+  const figure = event.currentTarget as HTMLElement
+  const shell = figure.querySelector('.image-shell') as HTMLElement
+  if (!shell || !photo.videoSrc) return
+
+  longPressTimer = setTimeout(() => {
+    const video = document.createElement('video')
+    video.src = photo.videoSrc!
+    video.className = 'hover-video'
+    video.muted = true
+    video.loop = true
+    video.playsInline = true
+    shell.appendChild(video)
+    hoverVideo = video
+    video.play().catch(() => {})
+  }, 500)
+}
+
+function stopLongPress (event: TouchEvent, photo: GalleryPhoto) {
+  cancelLongPress()
+  if (hoverVideo) {
+    hoverVideo.remove()
+    hoverVideo = null
+  }
+}
+
+function cancelLongPress () {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer)
+    longPressTimer = null
+  }
 }
 
 function loadMore () {
@@ -563,6 +603,12 @@ watch(
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.photo-wall :deep(.t-image-viewer__modal-mask) {
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
 }
 
 /* Live Photo 徽标 */
