@@ -126,13 +126,59 @@ function openPreview (photo: GalleryPhoto) {
   previewIndex.value = visiblePhotos.value.findIndex(p => p.src === photo.src)
   previewKey.value++
   showPreview.value = true
-  // 打开预览后，检查当前图是否是 Live，显示覆盖层
+  document.body.style.overflow = 'hidden'
   nextTickShowLiveOverlay(previewIndex.value)
+  // 绑定滑动手势到 viewer 容器
+  setTimeout(attachSwipeListeners, 100)
 }
 
 function onPreviewClose () {
   hideLiveOverlay()
+  detachSwipeListeners()
   showPreview.value = false
+  document.body.style.overflow = ''
+}
+
+// 预览左右滑动切换
+let swipeTouchStartX = 0
+let swipeViewerEl: HTMLElement | null = null
+
+function attachSwipeListeners () {
+  const el = document.querySelector('.t-image-viewer__modal') as HTMLElement | null
+  if (!el) return
+  swipeViewerEl = el
+  el.addEventListener('touchstart', onSwipeTouchStart, { passive: true })
+  el.addEventListener('touchend', onSwipeTouchEnd, { passive: true })
+}
+
+function detachSwipeListeners () {
+  if (swipeViewerEl) {
+    swipeViewerEl.removeEventListener('touchstart', onSwipeTouchStart)
+    swipeViewerEl.removeEventListener('touchend', onSwipeTouchEnd)
+    swipeViewerEl = null
+  }
+}
+
+function onSwipeTouchStart (e: TouchEvent) {
+  swipeTouchStartX = e.touches[0].clientX
+}
+
+function onSwipeTouchEnd (e: TouchEvent) {
+  const dx = e.changedTouches[0].clientX - swipeTouchStartX
+  if (Math.abs(dx) < 50) return
+  if (dx < 0) {
+    const next = previewIndex.value + 1
+    if (next < previewImages.value.length) {
+      previewIndex.value = next
+      onPreviewIndexChange(next)
+    }
+  } else {
+    const prev = previewIndex.value - 1
+    if (prev >= 0) {
+      previewIndex.value = prev
+      onPreviewIndexChange(prev)
+    }
+  }
 }
 
 function onPreviewIndexChange (index: number) {
@@ -237,7 +283,7 @@ function hideLiveOverlay () {
   liveOverlay.playing = false
 }
 
-// 悬停播放（瀑布流卡片）
+// 长按播放 Live（移动端）
 let hoverVideo: HTMLVideoElement | null = null
 
 function startHoverVideo (event: MouseEvent, photo: GalleryPhoto) {
@@ -287,7 +333,7 @@ function startLongPress (event: TouchEvent, photo: GalleryPhoto) {
     shell.appendChild(video)
     hoverVideo = video
     video.play().catch(() => {})
-  }, 500)
+  }, 300)
 }
 
 function stopLongPress (event: TouchEvent, photo: GalleryPhoto) {
@@ -410,6 +456,8 @@ onBeforeUnmount(() => {
     resizeTimeout = null
   }
   hideLiveOverlay()
+  detachSwipeListeners()
+  document.body.style.overflow = ''
 })
 
 watch(filteredPhotos, () => {
@@ -441,6 +489,10 @@ watch(
   margin: 0 auto;
   padding: 24px clamp(16px, 2vw, 32px) 0;
   box-sizing: border-box;
+  /* 禁止长按选中文字和触发 iOS 系统菜单 */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .vp-doc .photo-wall {
@@ -606,9 +658,9 @@ watch(
 }
 
 .photo-wall :deep(.t-image-viewer__modal-mask) {
-  background: rgba(0, 0, 0, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  background: rgba(0, 0, 0, 0.96) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Live Photo 徽标 */
