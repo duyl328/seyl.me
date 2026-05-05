@@ -28,6 +28,8 @@
           :key="photo.src"
           class="photo-card"
           @click="openPreview(photo)"
+          @mouseenter="photo.videoSrc && startHoverVideo($event, photo)"
+          @mouseleave="photo.videoSrc && stopHoverVideo($event)"
         >
           <div class="image-shell" :class="{ loaded: loadedMap[photo.src] }">
             <img
@@ -37,6 +39,7 @@
               decoding="async"
               @load="handleLoaded(photo.src)"
             >
+            <span v-if="photo.videoSrc" class="live-badge">LIVE</span>
           </div>
         </figure>
       </div>
@@ -50,11 +53,43 @@
         v-model:visible="showPreview"
         :images="previewImages"
         :default-index="previewIndex"
-        :key="previewIndex"
-        @close="showPreview = false"
+        :key="previewKey"
+        @close="onPreviewClose"
+        @index-change="onPreviewIndexChange"
       />
       <TDesignDark />
     </t-config-provider>
+
+    <!-- Live Photo 预览覆盖层 -->
+    <Teleport to="body">
+      <div
+        v-if="liveOverlay.visible"
+        class="live-overlay"
+      >
+        <!-- 未播放时显示静态封面图 -->
+        <img
+          v-if="!liveOverlay.playing"
+          :src="liveOverlay.imageSrc"
+          class="live-overlay-image"
+          @click="playLiveOnce"
+        />
+        <!-- 播放时显示视频 -->
+        <video
+          v-else
+          ref="liveVideoRef"
+          :src="liveOverlay.videoSrc"
+          class="live-overlay-video"
+          preload="auto"
+          playsinline
+          autoplay
+          @ended="onLiveVideoEnded"
+        />
+        <div v-if="!liveOverlay.playing" class="live-overlay-hint">
+          <span class="live-overlay-badge">LIVE</span>
+          <span class="live-overlay-tip">点击播放</span>
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 
@@ -97,12 +132,96 @@ function handleLoaded (src: string) {
 const showPreview = ref(false)
 const previewImages = ref<string[]>([])
 const previewIndex = ref(0)
+const previewKey = ref(0)
+
+// 当前预览列表对应的 photo 对象（用于查找 videoSrc）
+const previewPhotos = ref<GalleryPhoto[]>([])
 
 function openPreview (photo: GalleryPhoto) {
-  // 只预览已经渲染的照片
+  previewPhotos.value = visiblePhotos.value
   previewImages.value = visiblePhotos.value.map(p => p.src)
   previewIndex.value = visiblePhotos.value.findIndex(p => p.src === photo.src)
+  previewKey.value++
   showPreview.value = true
+  // 打开预览后，检查当前图是否是 Live，显示覆盖层
+  nextTickShowLiveOverlay(previewIndex.value)
+}
+
+function onPreviewClose () {
+  showPreview.value = false
+  hideLiveOverlay()
+}
+
+function onPreviewIndexChange (index: number) {
+  previewIndex.value = index
+  nextTickShowLiveOverlay(index)
+}
+
+// Live Photo 覆盖层
+const liveVideoRef = ref<HTMLVideoElement | null>(null)
+const liveOverlay = reactive({
+  visible: false,
+  videoSrc: '',
+  imageSrc: '',
+  playing: false,
+})
+
+function nextTickShowLiveOverlay (index: number) {
+  hideLiveOverlay()
+  const photo = previewPhotos.value[index]
+  if (photo?.videoSrc) {
+    setTimeout(() => {
+      liveOverlay.videoSrc = photo.videoSrc!
+      liveOverlay.imageSrc = photo.src
+      liveOverlay.visible = true
+      liveOverlay.playing = false
+    }, 80)
+  }
+}
+
+function hideLiveOverlay () {
+  liveOverlay.visible = false
+  liveOverlay.playing = false
+}
+
+function playLiveOnce () {
+  if (liveOverlay.playing) return
+  liveOverlay.playing = true
+}
+
+function onLiveVideoEnded () {
+  liveOverlay.playing = false
+}
+
+// 悬停播放（瀑布流卡片）
+let hoverVideo: HTMLVideoElement | null = null
+
+function startHoverVideo (event: MouseEvent, photo: GalleryPhoto) {
+  const figure = event.currentTarget as HTMLElement
+  const shell = figure.querySelector('.image-shell') as HTMLElement
+  if (!shell || !photo.videoSrc) return
+
+  const video = document.createElement('video')
+  video.src = photo.videoSrc
+  video.className = 'hover-video'
+  video.muted = true
+  video.loop = true
+  video.playsInline = true
+  video.autoplay = true
+  shell.appendChild(video)
+  hoverVideo = video
+  video.play().catch(() => {})
+}
+
+function stopHoverVideo (event: MouseEvent) {
+  const figure = event.currentTarget as HTMLElement
+  const shell = figure.querySelector('.image-shell') as HTMLElement
+  if (!shell) return
+  const video = shell.querySelector('.hover-video')
+  if (video) {
+    shell.removeChild(video)
+  }
+  hoverVideo = null
 }
 
 function loadMore () {
@@ -209,6 +328,7 @@ onBeforeUnmount(() => {
     clearTimeout(resizeTimeout)
     resizeTimeout = null
   }
+  hideLiveOverlay()
 })
 
 watch(filteredPhotos, () => {
@@ -402,5 +522,88 @@ watch(
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Live Photo 徽标 */
+.live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 悬停视频覆盖在图片上 */
+.hover-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  z-index: 1;
+}
+
+/* 预览 Live 覆盖层 */
+.live-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;  /* 整层穿透，只有 video 响应点击 */
+}
+
+.live-overlay-video {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 4px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.live-overlay-image {
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 4px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.live-overlay-hint {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.live-overlay-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(4px);
+}
+
+.live-overlay-tip {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
 }
 </style>
