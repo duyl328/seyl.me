@@ -84,9 +84,13 @@ def process(src: Path) -> None:
         img = ImageOps.exif_transpose(img)
         rgb = img.convert("RGB")
 
-        # 最长边超过 2048 则等比缩小
-        if max(rgb.size) > MAX_LONG_EDGE:
-            rgb.thumbnail((MAX_LONG_EDGE, MAX_LONG_EDGE), Image.LANCZOS)
+        # 统一缩放：最长边调整为 MAX_LONG_EDGE，保持宽高比（小图也会放大）
+        w, h = rgb.size
+        long_edge = max(w, h)
+        if long_edge != MAX_LONG_EDGE:
+            scale = MAX_LONG_EDGE / long_edge
+            new_size = (round(w * scale), round(h * scale))
+            rgb = rgb.resize(new_size, Image.LANCZOS)
 
         # 从初始质量开始，超过 1MB 则逐步降质量
         quality = WEBP_QUALITY
