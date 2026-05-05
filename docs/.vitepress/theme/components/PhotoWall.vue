@@ -60,34 +60,14 @@
       <TDesignDark />
     </t-config-provider>
 
-    <!-- Live Photo 预览覆盖层 -->
+    <!-- Live Photo 预览覆盖层（hint 提示，不拦截点击） -->
     <Teleport to="body">
       <div
-        v-if="liveOverlay.visible"
-        class="live-overlay"
+        v-if="liveOverlay.visible && !liveOverlay.playing"
+        class="live-overlay-hint-bar"
       >
-        <!-- 未播放时显示静态封面图 -->
-        <img
-          v-if="!liveOverlay.playing"
-          :src="liveOverlay.imageSrc"
-          class="live-overlay-image"
-          @click="playLiveOnce"
-        />
-        <!-- 播放时显示视频 -->
-        <video
-          v-else
-          ref="liveVideoRef"
-          :src="liveOverlay.videoSrc"
-          class="live-overlay-video"
-          preload="auto"
-          playsinline
-          autoplay
-          @ended="onLiveVideoEnded"
-        />
-        <div v-if="!liveOverlay.playing" class="live-overlay-hint">
-          <span class="live-overlay-badge">LIVE</span>
-          <span class="live-overlay-tip">点击播放</span>
-        </div>
+        <span class="live-overlay-badge">LIVE</span>
+        <span class="live-overlay-tip">点击照片播放</span>
       </div>
     </Teleport>
   </section>
@@ -148,8 +128,8 @@ function openPreview (photo: GalleryPhoto) {
 }
 
 function onPreviewClose () {
-  showPreview.value = false
   hideLiveOverlay()
+  showPreview.value = false
 }
 
 function onPreviewIndexChange (index: number) {
@@ -157,39 +137,100 @@ function onPreviewIndexChange (index: number) {
   nextTickShowLiveOverlay(index)
 }
 
-// Live Photo 覆盖层
-const liveVideoRef = ref<HTMLVideoElement | null>(null)
+// Live Photo 预览
 const liveOverlay = reactive({
   visible: false,
-  videoSrc: '',
-  imageSrc: '',
   playing: false,
 })
+
+let liveVideoEl: HTMLVideoElement | null = null
+let liveImgEl: HTMLImageElement | null = null
+let liveClickHandler: (() => void) | null = null
+
+function getViewerImageSize (): { width: number; height: number } | null {
+  const img = document.querySelector('.t-image-viewer__modal-image') as HTMLImageElement | null
+  if (!img) return null
+  const rect = img.getBoundingClientRect()
+  if (rect.width > 0 && rect.height > 0) return { width: rect.width, height: rect.height }
+  return null
+}
 
 function nextTickShowLiveOverlay (index: number) {
   hideLiveOverlay()
   const photo = previewPhotos.value[index]
-  if (photo?.videoSrc) {
-    setTimeout(() => {
-      liveOverlay.videoSrc = photo.videoSrc!
-      liveOverlay.imageSrc = photo.src
+  if (!photo?.videoSrc) return
+
+  let attempts = 0
+  const tryAttach = () => {
+    // TDesign 渲染两个 img，取可见的那个（display: block）
+    const imgs = document.querySelectorAll('.t-image-viewer__modal-image') as NodeListOf<HTMLImageElement>
+    const img = Array.from(imgs).find(el => el.style.display !== 'none') ?? null
+    const size = img ? img.getBoundingClientRect() : null
+    if (img && size && size.width > 0) {
+      liveImgEl = img
       liveOverlay.visible = true
       liveOverlay.playing = false
-    }, 80)
+
+      // 给 TDesign 的图片加点击事件
+      liveClickHandler = () => playLiveOnce(photo.videoSrc!, img)
+      img.style.cursor = 'pointer'
+      img.addEventListener('click', liveClickHandler)
+    } else if (attempts++ < 20) {
+      setTimeout(tryAttach, 50)
+    }
   }
+  setTimeout(tryAttach, 50)
+}
+
+function playLiveOnce (videoSrc: string, img: HTMLImageElement) {
+  if (liveOverlay.playing) return
+  liveOverlay.playing = true
+
+  // 记录所有 img 播放前的 display 状态
+  const siblings = Array.from(
+    img.parentElement?.querySelectorAll('.t-image-viewer__modal-image') ?? []
+  ) as HTMLImageElement[]
+  const prevDisplay = siblings.map(el => el.style.display)
+
+  // 创建 video 替换 img
+  const video = document.createElement('video')
+  video.src = videoSrc
+  video.style.cssText = img.style.cssText
+  video.style.cursor = 'default'
+  video.className = img.className
+  video.muted = true
+  video.playsInline = true
+  video.autoplay = true
+  liveVideoEl = video
+
+  // 隐藏所有 img
+  siblings.forEach(el => { el.style.display = 'none' })
+  img.parentElement?.appendChild(video)
+
+  video.addEventListener('ended', () => {
+    // 恢复播放前的 display 状态
+    siblings.forEach((el, i) => { el.style.display = prevDisplay[i] })
+    video.remove()
+    liveVideoEl = null
+    liveOverlay.playing = false
+  })
+
+  video.play().catch(() => {})
 }
 
 function hideLiveOverlay () {
+  if (liveImgEl && liveClickHandler) {
+    liveImgEl.removeEventListener('click', liveClickHandler)
+    liveImgEl.style.cursor = ''
+    liveImgEl = null
+    liveClickHandler = null
+  }
+  if (liveVideoEl) {
+    liveVideoEl.pause()
+    liveVideoEl.remove()
+    liveVideoEl = null
+  }
   liveOverlay.visible = false
-  liveOverlay.playing = false
-}
-
-function playLiveOnce () {
-  if (liveOverlay.playing) return
-  liveOverlay.playing = true
-}
-
-function onLiveVideoEnded () {
   liveOverlay.playing = false
 }
 
@@ -515,7 +556,7 @@ watch(
 .photo-wall :deep(.t-image-viewer__modal-image) {
   max-width: 95vw !important;
   max-height: 95vh !important;
-  object-fit: contain;
+  object-fit: contain !important;
 }
 
 .photo-wall :deep(.t-image-viewer__modal) {
@@ -551,40 +592,13 @@ watch(
   z-index: 1;
 }
 
-/* 预览 Live 覆盖层 */
-.live-overlay {
+/* 预览 Live 提示条 */
+.live-overlay-hint-bar {
   position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;  /* 整层穿透，只有 video 响应点击 */
-}
-
-.live-overlay-video {
-  max-width: 95vw;
-  max-height: 95vh;
-  object-fit: contain;
-  border-radius: 4px;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.live-overlay-image {
-  max-width: 95vw;
-  max-height: 95vh;
-  object-fit: contain;
-  border-radius: 4px;
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.live-overlay-hint {
-  position: absolute;
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 3001;
   display: flex;
   align-items: center;
   gap: 8px;
