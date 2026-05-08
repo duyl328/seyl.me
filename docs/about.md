@@ -6,7 +6,7 @@ isNoBackBtn: true
 head:
   - - meta
     - name: description
-      content: duyl328是一名全栈开发者，涉猎广泛的T型程序员，现居苏州。主要从事Windows桌面开发与Web前端开发。技术栈包括C#、Vue、Kotlin、Python、Rust、Go等。热爱摄影与旅行，致力于技术创新与知识分享
+      content: duyl328是一名全栈开发者，涉猎广泛的T型程序员，现居 杭州。主要从事Windows桌面开发与Web前端开发。技术栈包括C#、Vue、Kotlin、Python、Rust、Go等。热爱摄影与旅行，致力于技术创新与知识分享
   - - meta
     - name: keywords
       content: duyl328, 关于我, 全栈开发者, 个人简介, Windows桌面开发, Web前端, C#, Vue, Kotlin, Python, Rust, WPF, Tauri, VitePress, 摄影爱好者, 技术博主, 开源项目
@@ -65,8 +65,8 @@ Rust、Go 等语言。
 ## 如何认识我
 你可以丢给我一篇文章、一段代码、一部电影或一张照片，也可以是一种观点、一个困惑，或一个小小的灵感。
 
-我会认真读完、看完、或听完，并告诉你我的想法——
-也许我们能从那里开始一次有趣的讨论。
+我会认真读完、看完，并告诉你我的想法——
+或许我们能从那里开始一次有趣的讨论。
 
 - 邮箱：`jimmy.gatsby328@gmail.com`
 - GitHub：[duyl328](https://github.com/duyl328)
